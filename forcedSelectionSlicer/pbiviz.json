@@ -1,0 +1,26 @@
+{
+    "visual": {
+        "name": "forcedSelectionSlicer",
+        "displayName": "ForcedSelectionSlicer",
+        "guid": "forcedSelectionSlicer8544BCF8EE4841DC841C42400F768E37",
+        "visualClassName": "Visual",
+        "version": "1.0.0.0",
+        "description": "",
+        "supportUrl": "",
+        "gitHubUrl": ""
+    },
+    "apiVersion": "5.3.0",
+    "author": {
+        "name": "",
+        "email": ""
+    },
+    "assets": {
+        "icon": "assets/icon.png"
+    },
+    "externalJS": null,
+    "style": "style/visual.less",
+    "capabilities": "capabilities.json",
+    "dependencies": null,
+    "stringResources": [],
+    "version": "1.0.0.0"
+}

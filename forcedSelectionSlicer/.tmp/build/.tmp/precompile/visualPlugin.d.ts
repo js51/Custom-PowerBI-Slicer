@@ -1,0 +1,4 @@
+import powerbiVisualsApi from "powerbi-visuals-api";
+import IVisualPlugin = powerbiVisualsApi.visuals.plugins.IVisualPlugin;
+declare var forcedSelectionSlicer8544BCF8EE4841DC841C42400F768E37_DEBUG: IVisualPlugin;
+export default forcedSelectionSlicer8544BCF8EE4841DC841C42400F768E37_DEBUG;
