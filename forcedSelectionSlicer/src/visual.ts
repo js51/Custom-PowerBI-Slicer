@@ -44,6 +44,7 @@ export class Visual implements IVisual {
     private formattingSettingsService: FormattingSettingsService;
     private host: IVisualHost;
     private currentSelection: string;
+    private currentValues: string[];
 
     constructor(options: VisualConstructorOptions) {
         this.formattingSettingsService = new FormattingSettingsService();
@@ -56,29 +57,33 @@ export class Visual implements IVisual {
 
         let category = options.dataViews[0].categorical.categories[0];
         let values = category.values;
+        var values_strings = values.map((item: powerbi.PrimitiveValue) => item.toString());
 
-        this.target.innerHTML = '';
+        if (String(values_strings) != String(this.currentValues)) {
+            this.target.innerHTML = '';
+            // Add each item into a drop-down list
+            let select = document.createElement('select');
+            values.forEach((item: string, index: number) => {
+                let option = document.createElement('option');
+                option.text = item.toString();
+                select.add(option);
+            })
+            let find_value = values.findIndex((item: string) => item === this.currentSelection)
+            select.selectedIndex = find_value >= 0 ? find_value : 0;
+            this.filterByValue(category, select.options[select.selectedIndex].text)
+    
+            // Add for each item a click event
+            select.addEventListener('change', (event) => {
+                let selectedItem = select.options[select.selectedIndex].text;
+                this.currentSelection = selectedItem;
+                this.filterByValue(category, selectedItem); 
+            });
+    
+            this.target.appendChild(select);
+        }
 
-        // Add each item into a drop-down list
-        let select = document.createElement('select');
-        values.forEach((item: string, index: number) => {
-            let option = document.createElement('option');
-            option.text = item.toString();
-            select.add(option);
-        })
-
-        let find_value = values.findIndex((item: string) => item === this.currentSelection)
-        select.selectedIndex = find_value >= 0 ? find_value : 0;
-        this.filterByValue(category, select.options[select.selectedIndex].text)
-
-        // Add for each item a click event
-        select.addEventListener('change', (event) => {
-            let selectedItem = select.options[select.selectedIndex].text;
-            this.currentSelection = selectedItem;
-            this.filterByValue(category, selectedItem); 
-        });
-
-        this.target.appendChild(select);
+        // Set current value list to a copy of values list
+        this.currentValues = values_strings.slice();
     }
 
     public filterByValue(category: powerbi.DataViewCategoryColumn, value: string) {

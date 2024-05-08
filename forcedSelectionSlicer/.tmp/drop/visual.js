@@ -6557,6 +6557,7 @@ class Visual {
     formattingSettingsService;
     host;
     currentSelection;
+    currentValues;
     constructor(options) {
         this.formattingSettingsService = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .FormattingSettingsService */ .O();
         this.target = options.element;
@@ -6566,24 +6567,29 @@ class Visual {
         this.formattingSettings = this.formattingSettingsService.populateFormattingSettingsModel(_settings__WEBPACK_IMPORTED_MODULE_2__/* .VisualFormattingSettingsModel */ .S, options.dataViews[0]);
         let category = options.dataViews[0].categorical.categories[0];
         let values = category.values;
-        this.target.innerHTML = '';
-        // Add each item into a drop-down list
-        let select = document.createElement('select');
-        values.forEach((item, index) => {
-            let option = document.createElement('option');
-            option.text = item.toString();
-            select.add(option);
-        });
-        let find_value = values.findIndex((item) => item === this.currentSelection);
-        select.selectedIndex = find_value >= 0 ? find_value : 0;
-        this.filterByValue(category, select.options[select.selectedIndex].text);
-        // Add for each item a click event
-        select.addEventListener('change', (event) => {
-            let selectedItem = select.options[select.selectedIndex].text;
-            this.currentSelection = selectedItem;
-            this.filterByValue(category, selectedItem);
-        });
-        this.target.appendChild(select);
+        var values_strings = values.map((item) => item.toString());
+        if (String(values_strings) != String(this.currentValues)) {
+            this.target.innerHTML = '';
+            // Add each item into a drop-down list
+            let select = document.createElement('select');
+            values.forEach((item, index) => {
+                let option = document.createElement('option');
+                option.text = item.toString();
+                select.add(option);
+            });
+            let find_value = values.findIndex((item) => item === this.currentSelection);
+            select.selectedIndex = find_value >= 0 ? find_value : 0;
+            this.filterByValue(category, select.options[select.selectedIndex].text);
+            // Add for each item a click event
+            select.addEventListener('change', (event) => {
+                let selectedItem = select.options[select.selectedIndex].text;
+                this.currentSelection = selectedItem;
+                this.filterByValue(category, selectedItem);
+            });
+            this.target.appendChild(select);
+        }
+        // Set current value list to a copy of values list
+        this.currentValues = values_strings.slice();
     }
     filterByValue(category, value) {
         this.host.applyJsonFilter({

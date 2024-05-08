@@ -9,6 +9,7 @@ export declare class Visual implements IVisual {
     private formattingSettingsService;
     private host;
     private currentSelection;
+    private currentValues;
     constructor(options: VisualConstructorOptions);
     update(options: VisualUpdateOptions): void;
     filterByValue(category: powerbi.DataViewCategoryColumn, value: string): void;
