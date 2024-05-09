@@ -130,3 +130,4 @@ dist
 .pnp.*
 /forcedSelectionSlicer/.tmp
 forcedSelectionSlicer/webpack.statistics.dev.html
+forcedSelectionSlicer/webpack.statistics.prod.html
